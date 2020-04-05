@@ -2,6 +2,7 @@ const express = require('express')
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const Users = require('../../models/user')
 const config = require('../../config/')
 // 加密强度
@@ -59,5 +60,21 @@ router.post('/login', (req, res) => {
     }
   })
 })
+/**
+ * @description: 
+ * @param1: {
+ *      name:"desc",
+ *      }
+ * @return: 
+ * @detail: 
+ */
 
+router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
+  const user = req.user
+  res.json({
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar
+  });
+})
 module.exports = router
