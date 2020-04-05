@@ -1,0 +1,8 @@
+{
+  "dependencies": {},
+  "compilerOptions": {
+    "types": [
+      "node"
+    ]
+  }
+}
