@@ -2,7 +2,7 @@
  * @Author: WDD
  * @Date: 2020-04-03 21:27:17
  * @LastEditors: WDD
- * @LastEditTime: 2020-04-05 18:23:45
+ * @LastEditTime: 2020-04-05 21:32:35
  * @Description: 
  */
 const express = require('express')
@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const routerUser = require('./router/api/user')
+const HomeList = require('./router/api/homeList')
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(passport.initialize())
 require('./config/passport')(passport)
 app.use('/api/user', routerUser)
+app.use('/api/home', HomeList)
 app.listen(port, () => {
   console.log(`Server is running at port ${port}`);
 })

@@ -26,6 +26,7 @@ router.post('/register', (req, res) => {
         name: body.name,
         email: body.email,
         avatar,
+        identity: body.identity,
         password: body.password
       })
       // 对密码进行加密
@@ -50,9 +51,9 @@ router.post('/login', (req, res) => {
   Users.findOne({ email }, (err, user) => {
     if (!err && user) {
       bcrypt.compare(password, user.password, function (err, result) {
-        const rules = { id: user._id }
+        const rules = { id: user._id, name: user.name, identity: user.identity }
         jwt.sign(rules, config.secretKey, { expiresIn: 60 * 60 }, function (err, token) {
-          return result ? res.status(200).json({ msg: 'success', token }) : res.status(400).json({ msg: '用户名或密码有误' })
+          return result ? res.status(200).json({ msg: 'success', token: `Bearer ${token}` }) : res.status(400).json({ msg: '用户名或密码有误' })
         })
       });
     } else {
@@ -74,7 +75,8 @@ router.get("/profile", passport.authenticate("jwt", { session: false }), (req, r
   res.json({
     name: user.name,
     email: user.email,
-    avatar: user.avatar
+    avatar: user.avatar,
+    identity: user.identity
   });
 })
 module.exports = router
